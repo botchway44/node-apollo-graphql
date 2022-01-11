@@ -1,0 +1,19 @@
+{
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "apollo-server": "^3.6.1",
+    "apollo-server-core": "^3.6.1",
+    "apollo-server-express": "^3.6.1",
+    "express": "^4.17.2",
+    "graphql": "^16.2.0",
+    "graphql-tag": "^2.12.6",
+    "helmet": "^5.0.1",
+    "morgan": "^1.10.0"
+  },
+  "name": "apollo-graphql",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT"
+}
