@@ -4,18 +4,24 @@ const { ApolloServerPluginDrainHttpServer } = require ('apollo-server-core');
 const express = require( 'express');
 const http = require( 'http');
 const morgan = require('morgan');
-
+const USER_DATA = require('./data/MOCK_DATA.json')
 const typeDefs = gql`
         type User {
-            id: ID!
-            name: String!
+            id: Int!
             email: String!
             last_name: String!
             first_name: String!
         }
 
+        input UserSearchInput{
+            id: Int
+            first_name: String
+            last_name: String
+        }
+
         type Query {
             me: User!
+            users(input: UserSearchInput): [User]!
         }
 
         type Mutation {
@@ -27,15 +33,28 @@ const typeDefs = gql`
 const resolvers = {
     Query: {
         me: (parent, args, context) => {
-            console.log(context);
-
-            return {
+            return context.data.find(user => user.id === 1) ||  {
                 id: 1,
                 first_name: 'John',
                 email: 'john@gmail.com',
                 last_name: 'Doe',
             }
-        }
+        },
+
+        users: (parent, {input , x, y }, context, info)=>{
+            console.log(JSON.stringify(input));
+            console.log(input.id);
+                // if(user) return context.data.filter(user =>( user.id === id || user.first_name === first_name || user.last_name === last_name))
+                return USER_DATA;
+        },
+
+    },
+
+    User: {
+        id : (user)=>{
+            // console.log(user);
+            return 1;
+         }
     }
 };
 
@@ -50,7 +69,7 @@ async function startApolloServer(typeDefs, resolvers) {
     // Same ApolloServer initialization as before, plus the drain plugin.
     const server = new ApolloServer({
       context(){         
-         return {data : "hello"};
+         return {data : USER_DATA};
       },
       typeDefs,
       resolvers,
